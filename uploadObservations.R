@@ -26,7 +26,7 @@ library(mapview)
 library(mapedit)
 library(httr)
 library(jsonlite)
-library(RCurl)
+library(XML)
 
 ###
 # Function
@@ -382,9 +382,19 @@ server <- function(input, output, session) {
         TEMPLATE_ID = templateID(input$SensorMLURI, req(outputsParams())$lat[1], req(outputsParams())$lon[1], dfTot$par[j]),
         VALUES = paste0(listParam[,dfTot$col[1]], '#', listParam[,dfTot$col[j]], collapse = '@')
       )
-      results[[j-1]] <- gsub("\\n<", "<", gsub("=\\\\", "=", paste0(xslt::xml_xslt(xmlInsertResult, styleInsertResult, paramsxmlInsertResult), collapse = "")))
+      results[[j-1]] <- paste0(xslt::xml_xslt(xmlInsertResult, styleInsertResult, paramsxmlInsertResult), collapse = "")
     }
-    xml2::read_xml(results[[1]])
+    
+    for (h in length(results)) {
+      xmlRequest <- results[[h]]
+      xmlFile <- "request.xml"
+      XML::saveXML(XML::xmlTreeParse(xmlRequest, useInternalNodes = T), xmlFile)
+      response <- httr::POST(url = input$sosHost,
+                 body = upload_file(xmlFile),
+                 config = add_headers(c('Content-Type' = 'application/xml')))
+      paste0(response, collapse = '')
+    }
+    
   })
   
   # Conditions for switch on the Upload observations button
@@ -430,7 +440,6 @@ server <- function(input, output, session) {
       results[[j-1]] <- paste0(xslt::xml_xslt(xmlInsertResult, styleInsertResult, paramsxmlInsertResult), collapse = "")
     }
   })
-  # TODO: transform result in a single XML document. Now is a list of string.
 }
 # Run the app ----
 shinyApp(ui, server)
