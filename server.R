@@ -1,42 +1,11 @@
 ###
-# Function
+# Sources
 ###
-templateID <- function(procedureID, lat, lon, observedProp) {
-    ID <- paste0(
-        procedureID,
-        '/template/observedProperty/',
-        observedProp,
-        '/foi/SSF/SP/4326/',
-        lat,
-        '/',
-        lon
-    )
-    return(ID)
-}
+source("functions.R", local = TRUE)$value
 
 ###
-# Libraries
+# Server
 ###
-library(ggplot2)
-library(shiny)
-library(shinydashboard)
-library(shinydashboardPlus)
-library(shinycssloaders)
-library(shinyjs)
-library(shinyBS)
-library(crosstalk)
-library(leaflet)
-library(xslt)
-library(xml2)
-library(DT)
-library(leaflet.extras)
-library(mapview)
-library(mapedit)
-library(httr)
-library(jsonlite)
-library(XML)
-
-# Define server logic required to draw a histogram
 shinyServer(function(input, output) {
 
     # xslObs.url <- "https://www.get-it.it/objects/sensors/xslt/sensor2outputs_4Shiny.xsl"
