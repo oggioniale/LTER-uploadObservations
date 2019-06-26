@@ -53,10 +53,10 @@ shinyUI(
                                                 label = "Select server where you want to upload observations", 
                                                 multiple = F,
                                                 choices = list(
-                                                    "LTER-Eu CDN SOS (default)" = "http://cdn.lter-europe.net/observations/service",
-                                                    "LTER-Italy SOS" = "http://getit.lteritalia.it/observations/service"
+                                                    "LTER-Eu CDN SOS (default)" = "http://cdn.lter-europe.net",
+                                                    "LTER-Italy SOS" = "http://getit.lteritalia.it"
                                                 ),
-                                                selected = "http://getit.lteritalia.it/observations/service"
+                                                selected = "http://getit.lteritalia.it"
                                     ),
                                     
                                     # Input: procedure URL

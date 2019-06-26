@@ -45,7 +45,8 @@ shinyServer(function(input, output) {
     outputsParams <- reactive({
         listOutputs <- read.csv(text = xml_xslt((
             read_xml(
-                paste0('http://getit.lteritalia.it/observations/sos/kvp?service=SOS&version=2.0.0&request=DescribeSensor&procedure=',
+                paste0(input$sosHost,
+                       '/observations/sos/kvp?service=SOS&version=2.0.0&request=DescribeSensor&procedure=',
                        input$SensorMLURI,
                        '&procedureDescriptionFormat=http://www.opengis.net/sensorml/2.0'),
                 package = "xslt"
@@ -219,17 +220,17 @@ shinyServer(function(input, output) {
             xmlRequest <- results[[h]]
             xmlFile <- "request.xml"
             XML::saveXML(XML::xmlTreeParse(xmlRequest, useInternalNodes = T), xmlFile)
-            if (input$sosHost == 'http://getit.lteritalia.it/observations/service') {
+            if (input$sosHost == 'http://getit.lteritalia.it') {
                 # provide the token of GET-IT LTER-italy
                 tokenSOS <- paste0('Authorization = Token ', 'xxxxxxxxxxxx')
-                response <- httr::POST(url = input$sosHost,
+                response <- httr::POST(url = paste0(input$sosHost, '/observations/service'),
                                        body = upload_file(xmlFile),
                                        config = add_headers(c('Content-Type' = 'application/xml', tokenSOS)))
                 paste0(response, collapse = '')
             } else {
                 # provide the token of CDN
                 tokenSOS <- paste0('Authorization = Token ', 'xxxxxxxxxxxx')
-                response <- httr::POST(url = input$sosHost,
+                response <- httr::POST(url = paste0(input$sosHost, '/observations/service'),
                                        body = upload_file(xmlFile),
                                        config = add_headers(c('Content-Type' = 'application/xml', tokenSOS)))
                 paste0(response, collapse = '')
