@@ -40,7 +40,7 @@ library(XML)
 shinyServer(function(input, output) {
 
     # xslObs.url <- "https://www.get-it.it/objects/sensors/xslt/sensor2outputs_4Shiny.xsl"
-    xslObs.url <- "./../sensor2outputs_4Shiny.xsl"
+    xslObs.url <- "./sensor2outputs_4Shiny.xsl"
     style <- read_xml(xslObs.url, package = "xslt")
     outputsParams <- reactive({
         listOutputs <- read.csv(text = xml_xslt((
@@ -189,12 +189,12 @@ shinyServer(function(input, output) {
         )
         
         # xslInsertResult <- "https://www.get-it.it/objects/sensors/xslt/insertResult_4Shiny.xsl"
-        xslInsertResult <- "./../insertResult_4Shiny.xsl"
+        xslInsertResult <- "./insertResult_4Shiny.xsl"
         styleInsertResult <- xml2::read_xml(xslInsertResult, package = "xslt")
         
         xmlInsertResult <- xml2::read_xml(
             # "https://www.get-it.it/objects/sensors/xslt/insertResult_4Shiny.xsl"
-            "./../insertResult_4Shiny.xsl",
+            "./insertResult_4Shiny.xsl",
             package = "xslt"
         )
         
@@ -219,11 +219,23 @@ shinyServer(function(input, output) {
             xmlRequest <- results[[h]]
             xmlFile <- "request.xml"
             XML::saveXML(XML::xmlTreeParse(xmlRequest, useInternalNodes = T), xmlFile)
-            response <- httr::POST(url = input$sosHost,
-                                   body = upload_file(xmlFile),
-                                   config = add_headers(c('Content-Type' = 'application/xml', 'Authorization' = 'Token xxxxxxxxxxxx')))
-            paste0(response, collapse = '')
+            if (input$sosHost == 'http://getit.lteritalia.it/observations/service') {
+                # provide the token of GET-IT LTER-italy
+                tokenSOS <- paste0('Authorization = Token ', 'xxxxxxxxxxxx')
+                response <- httr::POST(url = input$sosHost,
+                                       body = upload_file(xmlFile),
+                                       config = add_headers(c('Content-Type' = 'application/xml', tokenSOS)))
+                paste0(response, collapse = '')
+            } else {
+                # provide the token of CDN
+                tokenSOS <- paste0('Authorization = Token ', 'xxxxxxxxxxxx')
+                response <- httr::POST(url = input$sosHost,
+                                       body = upload_file(xmlFile),
+                                       config = add_headers(c('Content-Type' = 'application/xml', tokenSOS)))
+                paste0(response, collapse = '')
+            }
         }
+        print(tokenSOS)
         
     })
     
@@ -245,12 +257,12 @@ shinyServer(function(input, output) {
         )
         
         # xslInsertResult <- "https://www.get-it.it/objects/sensors/xslt/insertResult_4Shiny.xsl"
-        xslInsertResult <- "./../insertResult_4Shiny.xsl"
+        xslInsertResult <- "./insertResult_4Shiny.xsl"
         styleInsertResult <- xml2::read_xml(xslInsertResult, package = "xslt")
         
         xmlInsertResult <- xml2::read_xml(
             # "https://www.get-it.it/objects/sensors/xslt/insertResult_4Shiny.xsl"
-            "./../insertResult_4Shiny.xsl",
+            "./insertResult_4Shiny.xsl",
             package = "xslt"
         )
         
