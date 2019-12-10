@@ -1,0 +1,24 @@
+#outputsValue tr td {
+  height: 80px;
+  vertical-align: middle;
+}
+h4 {
+  height: 35px;
+}
+
+#selectionParams{
+  margin: 22px 0 0 0!important;
+}
+
+#selectionParams div.shiny-input-container {
+  height: 91px;
+  border-top: 1px solid #f4f4f4;
+  padding: 5px;
+  margin:0 !important;
+}
+
+
+
+thead, th.sorting_disabled{
+  visibility:hidden;
+}

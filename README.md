@@ -5,7 +5,10 @@ eLTER-uploadObservations
 ...
 
 ## Usage
-...
+This application can be used following this steps:
+1. ...
+
+For more information about usage, please consult the guide into application.
 
 ## Meta
 * Please [provide a new manufacturer information by issues](https://github.com/oggioniale/eLTER-uploadObservations/issues), or email oggionia.a(at)irea.cnr.it
