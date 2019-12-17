@@ -2,10 +2,11 @@ eLTER-uploadObservations
 ======================
 
 ## Description
-...
+Server side application (Shiny app) to upload a csv dataset as observation data in a SOS server.
+The UI provides a simple mechanism to map columns of the CSV to the expected observable properties of a registered sensor.
 
 ## Usage
-This application can be used following this steps:
+This application can be used following these steps:
 1. ...
 
 For more information about usage, please consult the guide into application.
