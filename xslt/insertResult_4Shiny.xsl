@@ -13,14 +13,13 @@
     <xsl:param name="TEMPLATE_ID" />
     <xsl:param name="VALUES" />
     
-    <xsl:output method="xml" version="1.0" encoding="UTF-8" omit-xml-declaration="yes" indent="yes"
-        media-type="text/xml" />
+    <xsl:output method="xml" version="1.0" encoding="UTF-8" omit-xml-declaration="yes" indent="yes" media-type="text/xml" />
     
     <xsl:template match="/">
         <sos:InsertResult
     xmlns:sos="http://www.opengis.net/sos/2.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="SOS" version="2.0.0" xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd">
-    <sos:template><xsl:value-of select="$TEMPLATE_ID"/></sos:template>
+            <sos:template><xsl:value-of select="$TEMPLATE_ID"/></sos:template>
             <sos:resultValues><xsl:value-of select="$VALUES"/></sos:resultValues>
         </sos:InsertResult>
     </xsl:template>

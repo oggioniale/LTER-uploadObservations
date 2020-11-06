@@ -3,7 +3,7 @@ tabItem(
   fluidRow(
     box(
       width = 4,
-      title = "Inputs", 
+      title = "Inputs fixed station observations", 
       closable = FALSE, 
       status = "info", 
       solidHeader = FALSE, 
@@ -12,18 +12,10 @@ tabItem(
       # Input: sos host selection
       introBox(
         div(HTML("<h4><b>Server endpoint</b></h4>")),
-        selectInput(inputId = "sosHost",
+        selectInput(inputId = "sosHostFixed",
                     label = "Select server where you want to upload observations", 
                     multiple = F,
-                    choices = list(
-                      "LTER-Italy SOS (default) (SOS v2.0.0)" = "http://getit.lteritalia.it"#,
-                      # "LTER-Eu CDN SOS (SOS v2.0.0)" = "https://uk-lter-sos.sos.cdn.lter-europe.net", # https://uk-lter-sos.sos.cdn.lter-europe.net/service
-                      # "LTER-Italy CNR ISMAR - Venezia (SOS v2.0.0)" = "http://vesk.ve.ismar.cnr.it", # http://vesk.ve.ismar.cnr.it/observations/sos/pox
-                      # "NextData Project (SOS v2.0.0)" = "http://nextdata.get-it.it", # http://nextdata.get-it.it/observations/sos/pox
-                      # "iEcolab (SOS v1.0.0)" = "http://wsncentral.iecolab.es", # http://wsncentral.iecolab.es/sos/service
-                      # "IBG-3 Eifel Rur (SOS v1.0.0)" = "http://teodoor.icg.kfa-juelich.de", # http://teodoor.icg.kfa-juelich.de/elter.sos/sos
-                      # "LTER-Italy CNR IRSA - Pallanza (SOS v2.0.0)" = "http://sk.ise.cnr.it" # http://sk.ise.cnr.it/observations/sos/pox/
-                    ),
+                    choices = endpointsSos,
                     selected = "http://getit.lteritalia.it"
         ),
         data.step = 1,
@@ -34,7 +26,7 @@ tabItem(
       introBox(
         div(HTML("<hr><h4><b>Station</b></h4>")),
         # TODO: add the link to the SOS endpoint selected above. A shinyBS::bsModal appairs in order to visualize the sensors page.
-        selectInput(inputId = "SensorMLURI",
+        selectInput(inputId = "SensorMLURIFixed",
                     label = HTML("Select name of the station/sensor (e.g. <a href=\"http://getit.lteritalia.it/sensors/sensor/ds/?format=text/html&sensor_id=http%3A//www.get-it.it/sensors/getit.lteritalia.it/procedure/CampbellScientificInc/noModelDeclared/noSerialNumberDeclared/20170914050327762_790362\">ENEA Santa Teresa meteorological station</a>)"), 
                     multiple = FALSE,
                     ""
@@ -115,12 +107,12 @@ tabItem(
           tags$p(tags$b("Press i for collaps this slidebar."))
         ),
         column(6,
-               div(HTML("<h4>Parameters observed by selected sensor</h4>")),
-               DT::dataTableOutput("outputsValue")
+               div(HTML("<h4>Parameters observed by selected station</h4>")),
+               DT::dataTableOutput("outputsValueFixed")
         ),
         column(6,
                div(HTML("<h4>Colums headers (modify the saparator or the quote for display the name of the colums)</h4>")),
-               uiOutput("selectionParams")
+               uiOutput("selectionParamsFixed")
         )
       ),
       data.step = 5,
@@ -143,10 +135,10 @@ tabItem(
         tags$p(tags$b("Press i for collaps this slidebar."))
       ),
       column(12,
-             div(HTML("<hr><h4>Observations to be imported</h4>")),
+             div(HTML("<hr><h4>Observations will be imported</h4>")),
              # Output: Data file ----
              DT::dataTableOutput("file1"),
-             verbatimTextOutput("selectParamCSV")
+             uiOutput(outputId = "codeXMLFixed")
       )
     )
   )

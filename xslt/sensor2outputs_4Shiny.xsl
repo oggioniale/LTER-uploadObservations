@@ -21,7 +21,7 @@
         <xsl:text>link;name;uom;definition;lon;lat</xsl:text>
         <xsl:value-of select="$newline" />
         <xsl:for-each select="//sml:outputs/sml:OutputList/sml:output[position()]">
-            <xsl:text>&lt;a href=&quot;</xsl:text><xsl:value-of select="swe:Quantity/@definition"/><xsl:text>&quot; target=&quot;_blank&quot;></xsl:text><xsl:value-of select="translate(@name, '_', ' ')" /><xsl:text>&lt;/a&gt; (</xsl:text><xsl:value-of select="swe:Quantity/swe:uom/@code" /><xsl:text>)</xsl:text>
+            <xsl:text>&lt;a href=&apos;</xsl:text><xsl:value-of select="swe:Quantity/@definition"/><xsl:text>&apos; target=&apos;_blank&apos;></xsl:text><xsl:value-of select="translate(@name, '_', ' ')" /><xsl:text>&lt;/a&gt; (</xsl:text><xsl:value-of select="swe:Quantity/swe:uom/@code" /><xsl:text>)</xsl:text>
             <xsl:value-of select="$separator" />
             <xsl:value-of select="@name" />
             <xsl:value-of select="$separator" />
