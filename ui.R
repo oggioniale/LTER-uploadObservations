@@ -21,6 +21,7 @@ library(jsonlite)
 library(rintrojs)
 library(fs)
 library(shinyalert)
+library(shinyvalidate)
 
 ###
 # UI
@@ -63,8 +64,10 @@ shinyUI(
         collapsed = TRUE,
         sidebarMenu(
           menuItem("Fixed Station", tabName = "fixed", icon = icon("map-marked-alt", lib = "font-awesome"))
-        #   ,
-        #   menuItem("Profile", tabName = "profile", icon = icon("stream", lib = "font-awesome"))
+          ,
+          menuItem("Transect (vertical)", tabName = "profile", icon = icon("stream", lib = "font-awesome"))
+          ,
+          menuItem("On Sample", tabName = "bio", icon = icon("eyedropper", lib = "font-awesome"))
         )
       ),
       dashboardBody(
@@ -73,8 +76,10 @@ shinyUI(
         ),
         tabItems(
           source("ui/fixedUI.R", local = TRUE)$value
-          # ,
-          # source("ui/profileUI.R", local = TRUE)$value
+          ,
+          source("ui/profileUI.R", local = TRUE)$value
+          ,
+          source("ui/bioUI.R", local = TRUE)$value
         )
       )
     )
