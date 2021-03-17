@@ -10,7 +10,7 @@ tabItem(
       collapsible = TRUE,
       enable_sidebar = TRUE,
       sidebar_width = 25,
-      sidebar_start_open = FALSE,
+      sidebar_start_open = TRUE,
       sidebar_content = tagList(
         tags$p("This section allows to upload the observations, retrieved by a measure of properties of sample collected in a specific environment (e.g. water, air, soil, etc.), in the LTER-Italy system."),
         tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
@@ -111,8 +111,8 @@ tabItem(
       sidebar_width = 25,
       sidebar_start_open = TRUE,
       sidebar_content = tagList(
-        tags$p("The box is use to match the parameters observed by the station selected and the headers of the colums in the file uploaded. This allows to: i. verify that the observations  that you would like to upload have the correct units of measurement; ii. upload properly the observations with the properties observed; iii. enrich the observation with the semantic information about the property observed (verify the property concept by click on the parameter).
-It is assumed that the observations being uploaded have been collected by the selected sensor."),
+        tags$p("The box is use to match the parameters observed by the station selected and the headers of the colums in the file uploaded. This allows to: i. verify that the observations  that you would like to upload have the correct units of measurement; ii. upload properly the observations with the properties observed; iii. enrich the observation with the semantic information about the property observed (verify the property concept by click on the parameter)."),
+        tags$p("It is assumed that the observations being uploaded have been collected by the selected sensor."),
         tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
       ),
       fluidRow(
