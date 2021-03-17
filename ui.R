@@ -21,6 +21,7 @@ library(jsonlite)
 library(rintrojs)
 library(fs)
 library(shinyalert)
+# remotes::install_github("rstudio/shinyvalidate")
 library(shinyvalidate)
 
 ###
@@ -31,7 +32,7 @@ shinyUI(
     introjsUI(),
     useShinyalert(),
     dashboardPagePlus(
-      skin = "green-light",
+      skin = "blue",
       collapse_sidebar = TRUE,
       dashboardHeaderPlus(
         title = tagList(
@@ -66,8 +67,10 @@ shinyUI(
           menuItem("Fixed Station", tabName = "fixed", icon = icon("map-marked-alt", lib = "font-awesome"))
           ,
           menuItem("Transect (vertical)", tabName = "profile", icon = icon("stream", lib = "font-awesome"))
+          # ,
+          # menuItem("Transect (horizontal)", tabName = "path", icon = icon("wave-square", lib = "font-awesome"))
           ,
-          menuItem("On Sample", tabName = "bio", icon = icon("eyedropper", lib = "font-awesome"))
+          menuItem("On Sample", tabName = "sample", icon = icon("eyedropper", lib = "font-awesome"))
         )
       ),
       dashboardBody(
@@ -78,8 +81,10 @@ shinyUI(
           source("ui/fixedUI.R", local = TRUE)$value
           ,
           source("ui/profileUI.R", local = TRUE)$value
+          # ,
+          # source("ui/pathUI.R", local = TRUE)$value
           ,
-          source("ui/bioUI.R", local = TRUE)$value
+          source("ui/sampleUI.R", local = TRUE)$value
         )
       )
     )

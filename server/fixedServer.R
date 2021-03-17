@@ -5,10 +5,10 @@ observe({
   input$sosHost
   # Show a simple modal
   shinyalert(
-    title = "Upload observations interface!",
+    title = "Upload observations interface! The overview provide generic explanation of interface.",
     type = "info",
     confirmButtonText = "Give me an overview",
-    timer = 3000,
+    timer = 7000,
     showCancelButton = TRUE
   )
 })

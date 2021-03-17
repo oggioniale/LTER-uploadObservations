@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:InsertObservation xmlns:sos="http://www.opengis.net/sos/2.0"
+    xmlns:swes="http://www.opengis.net/swes/2.0" xmlns:swe="http://www.opengis.net/swe/2.0"
+    xmlns:sml="http://www.opengis.net/sensorML/1.0.1" xmlns:gml="http://www.opengis.net/gml/3.2"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:om="http://www.opengis.net/om/2.0"
+    xmlns:sams="http://www.opengis.net/samplingSpatial/2.0"
+    xmlns:sf="http://www.opengis.net/sampling/2.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="SOS" version="2.0.0"
+    xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd http://www.opengis.net/samplingSpatial/2.0 http://schemas.opengis.net/samplingSpatial/2.0/spatialSamplingFeature.xsd">
+    <!-- optional -->
+    <!--
+    <swes:extension>
+        <swe:Boolean definition="SplitDataArrayIntoObservations">
+            <swe:value>true</swe:value>
+        </swe:Boolean>
+    </swes:extension>
+    -->
+    <!-- multiple offerings are possible -->
+    <sos:offering>$OFFERING</sos:offering>
+
+    <sos:observation>
+        <!-- OM_Observation o1 -->
+        <om:OM_Observation gml:id="core01">
+
+            <om:type
+                xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation"/>
+            <om:phenomenonTime>
+                <gml:TimePeriod gml:id="phenomenonTime">
+                    <gml:beginPosition>BEGIN_TIME</gml:beginPosition>
+                    <gml:endPosition>END_TIME</gml:endPosition>
+                </gml:TimePeriod>
+            </om:phenomenonTime>
+            <om:resultTime>
+                <gml:TimeInstant gml:id="resultTime">
+                    <gml:timePosition>LAB_DATETIME</gml:timePosition>
+                </gml:TimeInstant>
+            </om:resultTime>
+            <om:procedure xlink:href="PROCEDURE" />
+            <om:observedProperty xlink:href="OBS_PPROPERTY" />
+            <om:featureOfInterest>
+                <sams:SF_SpatialSamplingFeature gml:id="als014">
+                    <!-- <gml:identifier codeSpace="">http://sp7.irea.cnr.it/featureOfInterest/PuntaSaluteCanalGrande</gml:identifier> -->
+                    <gml:name>als014 core in Lake Alserio</gml:name>
+                    <!--
+                        <gml:description>Lake Alserio core collected by ISE CNR with 2 different purposes: pigments and geochemical parameters</gml:description>
+                    -->
+                    <gml:boundedBy>
+                        <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4979">
+                            <!-- 2D CRS -->
+                            <gml:lowerCorner>45.786388 9.216668 252.0</gml:lowerCorner>
+                            <gml:upperCorner>45.786390 9.216666 251.35</gml:upperCorner>
+                        </gml:Envelope>
+                    </gml:boundedBy>
+                    <sf:type
+                        xlink:href="http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingCurve"/>
+                    <sf:sampledFeature
+                        xlink:href="http://geoserver.ise.cnr.it/ise_env/ows?service=WFS&#38;version=1.0.0&#38;request=GetFeature&#38;typeName=ise_env:Alserio_lake"
+                        xlink:title="Lake Alserio"/>
+                    <sams:shape>
+                        <!-- è stata cambiata la request in origine era:
+                        <gml:LineString gml:id="shape_als014"
+                            srsName="http://www.opengis.net/def/crs/EPSG/0/4979">
+                        probabilmente un errore nel DB PostGIS (?):
+                        <ows:ExceptionText>Error while inserting new observation!
+                            [EXEPTION]:
+                            ERROR: Operation on mixed SRID geometries
+                        </ows:ExceptionText>
+                        -->
+                        <gml:LineString gml:id="shape_als014"
+                            srsName="http://www.opengis.net/def/crs/EPSG/0/4979">
+                            <!-- 3D CRS -->
+                            <!-- la profondità dell'inizio della corota è:
+                                (livello del lago - profondità lago nel punto di prelievo della carota)
+                                es. se oggi la superficie del lago ha quota 295 m slm e la profondità al 
+                                      fondo è di 35 m la line string lungo la carota avrà posizione 
+                                      iniziale con z uguale a 260 m slm
+                                    se domani la superficie del lago ha quota 280 m slm e la profondità al 
+                                      fondo sarà di 20 m ma la line string lungo la carota avrà posizione
+                                      iniziale sempre con z uguale a 260 m slm
+                            -->
+                            <gml:pos>45.786389 9.216667 252.0</gml:pos>
+                            <!-- ... -->
+                            <gml:pos>45.786389 9.216667 251.35</gml:pos>
+                        </gml:LineString>
+                    </sams:shape>
+                </sams:SF_SpatialSamplingFeature>
+            </om:featureOfInterest>
+
+            <om:result>
+                <swe:DataStream>
+                    <swe:elementType name="defs">
+                        <swe:DataRecord>
+                            <swe:field name="time">
+                                <swe:Time
+                                    definition="http://www.opengis.net/def/property/OGC/0/SamplingTime">
+                                    <swe:uom
+                                        xlink:href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"
+                                    />
+                                </swe:Time>
+                            </swe:field>
+                            <swe:field name="location">
+                                <swe:Vector
+                                    definition="http://www.opengis.net/def/property/OGC/0/PlatformLocation"
+                                    referenceFrame="http://www.opengis.net/def/crs/EPSG/0/4979" localFrame="">
+                                    <swe:coordinate name="lat">
+                                        <swe:Quantity
+                                            definition="http://sweet.jpl.nasa.gov/2.0/spaceCoordinates.owl#Latitude"
+                                            axisID="Lat">
+                                            <swe:uom code="deg"/>
+                                        </swe:Quantity>
+                                    </swe:coordinate>
+                                    <swe:coordinate name="lon">
+                                        <swe:Quantity
+                                            definition="http://sweet.jpl.nasa.gov/2.0/spaceCoordinates.owl#Longitude"
+                                            axisID="Long">
+                                            <swe:uom code="deg"/>
+                                        </swe:Quantity>
+                                    </swe:coordinate>
+                                </swe:Vector>
+                            </swe:field>
+                            <swe:field name="AirTemperature">
+                                <swe:Quantity
+                                    definition="http://mmisw.org/ont/cf/parameter/air_temperature">
+                                    <swe:uom code="degC"/>
+                                </swe:Quantity>
+                            </swe:field>
+                            <swe:field name="AirPressure">
+                                <swe:Quantity
+                                    definition="http://mmisw.org/ont/cf/parameter/air_pressure">
+                                    <swe:uom code="hPa"/>
+                                </swe:Quantity>
+                            </swe:field>
+
+                        </swe:DataRecord>
+                    </swe:elementType>
+
+                    <swe:encoding>
+                        <swe:TextEncoding tokenSeparator="#" blockSeparator="@"/>
+                    </swe:encoding>
+                    <swe:values>sweValues</swe:values>
+                </swe:DataStream>
+            </om:result>
+
+        </om:OM_Observation>
+        <!-- End of OM_Observation o1 -->
+    </sos:observation>
+
+</sos:InsertObservation>

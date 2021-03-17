@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:InsertObservation service="SOS" version="2.0.0"
+    xmlns:sos="http://www.opengis.net/sos/2.0"
+    xmlns:swes="http://www.opengis.net/swes/2.0"
+    xmlns:sml="http://www.opengis.net/sensorml/2.0" 
+    xmlns:swe="http://www.opengis.net/swe/2.0"
+    xmlns:swe1="http://www.opengis.net/swe/1.0.1" 
+    xmlns:gml="http://www.opengis.net/gml/3.2"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:om="http://www.opengis.net/om/2.0"
+    xmlns:sams="http://www.opengis.net/samplingSpatial/2.0"
+    xmlns:sf="http://www.opengis.net/sampling/2.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sos/2.0 http://schemas.opengis.net/sos/2.0/sos.xsd http://www.opengis.net/samplingSpatial/2.0 http://schemas.opengis.net/samplingSpatial/2.0/spatialSamplingFeature.xsd">
+    <!-- optional -->
+    <!-- 
+    <swes:extension>
+      <swe:Boolean definition="SplitDataArrayIntoObservations">
+        <swe:value>true</swe:value>
+      </swe:Boolean>
+    </swes:extension>
+    -->
+    <!-- multiple offerings are possible -->
+    <sos:offering>$OFFERING</sos:offering>
+    <sos:observation>
+        <om:OM_Observation gml:id="o1">
+            <om:type xlink:href="http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_SWEArrayObservation"/>
+            <om:phenomenonTime>
+                <gml:TimePeriod gml:id="phenomenonTime">
+                    <gml:beginPosition>BEGIN_TIME</gml:beginPosition>
+                    <gml:endPosition>END_TIME</gml:endPosition>
+                </gml:TimePeriod>
+            </om:phenomenonTime>
+            <om:resultTime>
+                <gml:TimeInstant gml:id="resultTime">
+                    <gml:timePosition>LAB_DATETIME</gml:timePosition>
+                </gml:TimeInstant>
+            </om:resultTime>
+            <om:procedure xlink:href="PROCEDURE" />
+            <om:observedProperty xlink:href="OBS_PPROPERTY" />
+            <om:featureOfInterest>
+                <sams:SF_SpatialSamplingFeature gml:id="SSF"> <!-- change with a short name of point, station, etc. -->
+                    <gml:identifier codeSpace="">IDENTIFIER_URL</gml:identifier> <!-- change with a URL/URI of point, station, etc. -->
+                    <gml:name>NAME</gml:name> <!-- change with a long name of point, station, etc. -->
+                    <sf:type xlink:href="http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint"/>
+                    <sf:sampledFeature xlink:href="SAMPLED_FEATURE"/> <!-- from Marine Regions, 3314 is a MRGID of "Adriatic Sea" term -->
+                    <sams:shape>
+                        <gml:Point gml:id="POINT"> <!-- can be different with sams:SF_SpatialSamplingFeature gml:id -->
+                            <gml:pos srsName="http://www.opengis.net/def/crs/EPSG/0/4326">LAT_LONG</gml:pos> <!-- change it! -->
+                        </gml:Point>
+                    </sams:shape>
+                </sams:SF_SpatialSamplingFeature>
+            </om:featureOfInterest>
+            <om:result xsi:type="swe:DataArrayPropertyType">
+                <swe:DataArray>
+                    <swe:elementCount>
+                        <swe:Count>
+                            <swe:value>NUM_VALUE</swe:value>
+                        </swe:Count>
+                    </swe:elementCount>
+                    <swe:elementType name="defs">
+                        <swe:DataRecord><OMRESULT/></swe:DataRecord>
+                    </swe:elementType>
+                    <swe:encoding>
+                        <swe:TextEncoding tokenSeparator="#" blockSeparator="@"/>
+                    </swe:encoding>
+                    <swe:values>sweValues</swe:values>
+                </swe:DataArray>
+            </om:result>
+        </om:OM_Observation>
+    </sos:observation>
+</sos:InsertObservation>

@@ -14,7 +14,10 @@ shinyServer(function(input, output, session) {
     # Server profile
     source("server/profileServer.R", local = TRUE)$value
     
+    # Server profile
+    # source("server/pathServer.R", local = TRUE)$value
+    
     # Server bio
-    source("server/bioServer.R", local = TRUE)$value
+    source("server/sampleServer.R", local = TRUE)$value
 
 })

@@ -1,9 +1,9 @@
 tabItem(
-  tabName = "profile",
+  tabName = "sample",
   fluidRow(
     boxPlus(
       width = 4,
-      title = "Inputs profile observations", 
+      title = "Inputs samples observations", 
       closable = FALSE, 
       status = "info", 
       solidHeader = FALSE, 
@@ -12,13 +12,13 @@ tabItem(
       sidebar_width = 25,
       sidebar_start_open = FALSE,
       sidebar_content = tagList(
-        tags$p("This section allows to upload the observations, retrieved by a sensor running along a vertical profile/transect (e.g. a column of water or air, a well, etc.), in the LTER-Italy system."),
+        tags$p("This section allows to upload the observations, retrieved by a measure of properties of sample collected in a specific environment (e.g. water, air, soil, etc.), in the LTER-Italy system."),
         tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
       ),
       column(12,
              # Input: sos host selection
              div(HTML("<h4>Server endpoint</h4>")),
-             selectInput(inputId = "sosHostProfile",
+             selectInput(inputId = "sosHostSample",
                          label = "Select server where you want to upload observations", 
                          multiple = F,
                          choices = endpointsSos,
@@ -28,25 +28,25 @@ tabItem(
              # Input: procedure URL
              div(HTML("<hr><h4><b>Sensor</b></h4>")),
              # TODO: add the link to the SOS endpoint selected above. A shinyBS::bsModal appairs in order to visualize the sensors page.
-             selectInput(inputId = "SensorMLURIProfile",
+             selectInput(inputId = "SensorMLURISample",
                          label = HTML("Select name of the station/sensor (e.g. <a href=\"http://getit.lteritalia.it/sensors/sensor/ds/?format=text/html&sensor_id=http%3A//www.get-it.it/sensors/getit.lteritalia.it/procedure/CampbellScientificInc/noModelDeclared/noSerialNumberDeclared/20170914050327762_790362\">ENEA Santa Teresa meteorological station</a>)"), 
                          multiple = FALSE,
                          ""
              ),
              
              # Input: FOI POPUP
-             actionButton(inputId = 'foiProfile', 
+             actionButton(inputId = 'foiSample', 
                           label = 'Click for provide station\'s position'
              ),
              shinyBS::bsModal(
-               id = "modalnewProfile",
+               id = "modalnewSample",
                title = "Draw the marker for the new station's position if is not already present in the lisf above",
-               trigger = "foiProfile",
+               trigger = "foiSample",
                size = "large",
                # editModUI("editor"),
-               leafletOutput(outputId = "mymap"),
-               textInput("lat", "Latitude (e.g. 45.9206)"),
-               textInput("long", "Longitude (e.g. 8.6019)"),
+               leafletOutput(outputId = "mymapSample"),
+               textInput("latSample", "Latitude (e.g. 45.9206)"),
+               textInput("longSample", "Longitude (e.g. 8.6019)"),
                #   # selectInput(inputId = "srs",
                #   #             label = "Projection",
                #   #             multiple = F,
@@ -56,15 +56,15 @@ tabItem(
                #   #             ),
                #   #             selected = "http://www.opengis.net/def/crs/EPSG/0/4326"
                #   # ),
-               textInput("gmlName", "Station's name"),
-               textInput("sfSampledFeature", "Sampled Feature (URI)")
+               textInput("gmlNameSample", "Station's name"),
+               textInput("sfSampledFeatureSample", "Sampled Feature (URI)")
              ),
              div(HTML("<hr><h4>File</h4>")),
              # Input: Select a file
-             checkboxInput("withTimeProfile", 
+             checkboxInput("withTimeSample", 
                            HTML("<b>Is your dataset with date and time?</b>"), 
                            TRUE),
-             fileInput("file1Profile", "Choose CSV File",
+             fileInput("file1Sample", "Choose CSV File",
                        multiple = FALSE,
                        accept = c("text/csv",
                                   "text/comma-separated-values,text/plain",
@@ -72,31 +72,31 @@ tabItem(
              ),
              
              # Input: Checkbox if file has header ----
-             checkboxInput("headerProfile", "Header", TRUE),
+             checkboxInput("headerSample", "Header", TRUE),
              
              # Input: Select separator ----
-             radioButtons("sepProfile", "Separator",
+             radioButtons("sepSample", "Separator",
                           choices = c(Comma = ",",
                                       Semicolon = ";",
                                       Tab = "\t"),
                           selected = ","),
              
              # Input: Select quotes ----
-             radioButtons("quoteProfile", "Quote",
+             radioButtons("quoteSample", "Quote",
                           choices = c(None = "",
                                       "Double Quote" = '"',
                                       "Single Quote" = "'"),
                           selected = '"'),
              
              # Input: Select number of rows to display ----
-             radioButtons("dispProfile", "Display",
+             radioButtons("dispSample", "Display",
                           choices = c(Head = "head",
                                       All = "all"),
                           selected = "all"),
-             checkboxInput("finalCheckProfile", 
+             checkboxInput("finalCheckSample", 
                            HTML("<b>Check this box when all columns are matched</b>"), 
                            FALSE),
-             actionButton("sendFileProfile", "Upload observations", icon = icon("file-upload"))
+             actionButton("sendFileSample", "Upload observations", icon = icon("file-upload"))
       )
     ),
     # Main panel for displaying outputs ----
@@ -115,13 +115,15 @@ tabItem(
 It is assumed that the observations being uploaded have been collected by the selected sensor."),
         tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
       ),
-      column(6,
-             div(HTML("<h4>Parameters observed by selected sensor</h4>")),
-             DT::dataTableOutput(outputId = "outputsValueProfile")
-      ),
-      column(6,
-             div(HTML("<h4>Colums headers (modify the saparator or the quote for display the name of the colums)</h4>")),
-             uiOutput(outputId = "selectionParamsProfile")
+      fluidRow(
+        column(6,
+               div(HTML("<h4>Parameters observed by selected sensor</h4>")),
+               DT::dataTableOutput(outputId = "outputsValueSample")
+        ),
+        column(6,
+               div(HTML("<h4>Colums headers (modify the saparator or the quote for display the name of the colums)</h4>")),
+               uiOutput(outputId = "selectionParamsSample")
+        )
       )
     ),
     fluidRow(
@@ -142,8 +144,8 @@ It is assumed that the observations being uploaded have been collected by the se
         column(12,
                div(HTML("<hr><h4>Observations will be imported</h4>")),
                # Output: Data file ----
-               DT::dataTableOutput(outputId = "file1Profile"),
-               uiOutput(outputId = "selectParamCSVProfile")
+               DT::dataTableOutput(outputId = "file1Sample"),
+               uiOutput(outputId = "selectParamCSVSample")
         )
       )
     )

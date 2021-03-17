@@ -57,7 +57,7 @@ getProcedureList <- function(sosHost) {
   
   return(listProcedure)
 }
-# getProcedureList(sosHost = 'http://demo0.get-it.it')
+# getProcedureList(sosHost = 'http://getit.lteritalia.it')
 
 # List of sml:outputs name, definition and code by SOS endpoint and Procedure endpoint
 getOutputsList <- function(sosHost, procedure) {
