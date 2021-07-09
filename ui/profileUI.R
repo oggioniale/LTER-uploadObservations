@@ -22,14 +22,14 @@ tabItem(
                          label = "Select server where you want to upload observations", 
                          multiple = F,
                          choices = endpointsSos,
-                         selected = "http://demo0.get-it.it"
+                         selected = "http://getit.lteritalia.it"
              ),
              
              # Input: procedure URL
              div(HTML("<hr><h4><b>Sensor</b></h4>")),
              # TODO: add the link to the SOS endpoint selected above. A shinyBS::bsModal appairs in order to visualize the sensors page.
              selectInput(inputId = "SensorMLURIProfile",
-                         label = HTML("Select name of the station/sensor (e.g. <a href=\"http://getit.lteritalia.it/sensors/sensor/ds/?format=text/html&sensor_id=http%3A//www.get-it.it/sensors/getit.lteritalia.it/procedure/CampbellScientificInc/noModelDeclared/noSerialNumberDeclared/20170914050327762_790362\">ENEA Santa Teresa meteorological station</a>)"), 
+                         label = HTML("Select name of the station/sensor (e.g. <a href=\"http://getit.lteritalia.it/sensors/sensor/ds/?format=text/html&sensor_id=http%3A//www.get-it.it/sensors/getit.lteritalia.it/procedure/CampbellScientificInc/noModelDeclared/noSerialNumberDeclared/20170914050327762_790362\" target=\"_blank\">ENEA Santa Teresa meteorological station</a>)"), 
                          multiple = FALSE,
                          ""
              ),
@@ -57,7 +57,12 @@ tabItem(
                #   #             selected = "http://www.opengis.net/def/crs/EPSG/0/4326"
                #   # ),
                textInput("gmlName", "Station's name"),
-               textInput("sfSampledFeature", "Sampled Feature (URI)")
+               textInput(
+                 "sfSampledFeature", 
+                 HTML(
+                   "Sampled Feature URI - Please provide the DEIMS.iD of the eLTER site (e.g. <a href=\"https://deims.org/f30007c4-8a6e-4f11-ab87-569db54638fe\" target=\"_blank\">Lago Maggiore</a>)"
+                 )
+               )
              ),
              div(HTML("<hr><h4>File</h4>")),
              # Input: Select a file

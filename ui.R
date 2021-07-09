@@ -69,8 +69,8 @@ shinyUI(
           menuItem("Transect (vertical)", tabName = "profile", icon = icon("stream", lib = "font-awesome"))
           # ,
           # menuItem("Transect (horizontal)", tabName = "path", icon = icon("wave-square", lib = "font-awesome"))
-          ,
-          menuItem("On Sample", tabName = "sample", icon = icon("eyedropper", lib = "font-awesome"))
+          # ,
+          # menuItem("On Sample", tabName = "sample", icon = icon("eyedropper", lib = "font-awesome"))
         )
       ),
       dashboardBody(
@@ -83,8 +83,8 @@ shinyUI(
           source("ui/profileUI.R", local = TRUE)$value
           # ,
           # source("ui/pathUI.R", local = TRUE)$value
-          ,
-          source("ui/sampleUI.R", local = TRUE)$value
+          # ,
+          # source("ui/sampleUI.R", local = TRUE)$value
         )
       )
     )

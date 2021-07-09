@@ -18,6 +18,6 @@ shinyServer(function(input, output, session) {
     # source("server/pathServer.R", local = TRUE)$value
     
     # Server bio
-    source("server/sampleServer.R", local = TRUE)$value
+    # source("server/sampleServer.R", local = TRUE)$value
 
 })

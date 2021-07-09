@@ -22,7 +22,7 @@ tabItem(
                          label = "Select server where you want to upload observations", 
                          multiple = F,
                          choices = endpointsSos,
-                         selected = "http://demo0.get-it.it"
+                         selected = "http://getit.lteritalia.it"
              ),
              
              # Input: procedure URL

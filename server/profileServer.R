@@ -90,9 +90,9 @@ output$outputsValueProfile <- DT::renderDataTable({
     req(outputsParamsProfile()),
     selection = "none",
     colnames = c('Name', 'URI'),
-    extensions="Scroller",
-    style="bootstrap",
-    class="compact",
+    extensions = "Scroller",
+    style = "bootstrap",
+    class = "compact",
     escape = FALSE,
     editable = FALSE,
     rownames = FALSE,
@@ -149,7 +149,7 @@ output$file1Profile <- DT::renderDataTable({
                   # columnDefs = list(list(
                   #   visible = FALSE
                   # )),
-                  #dom = 't',
+                  # dom = 't',
                   ordering = FALSE
                 ),
                 rownames = FALSE
@@ -249,10 +249,11 @@ output$selectParamCSVProfile <- renderUI({
       gsub(' ', '_', .) %>% 
       as.list(), # e.g. m
     # from map
-    SF_SpatialSamplingFeature_gmlName = input$gmlName, # e.g. PTF - Piattaforma Acqua Alta
-    SF_SpatialSamplingFeature_gmlId = paste0('SSF_', gsub(pattern="[[:punct:]]|[[:space:]]", input$gmlName, replacement="_")), # e.g. PTF
-    SF_SpatialSamplingFeature_identifier = paste0('http://sp7.irea.cnr.it/featureOfInterest/', gsub(pattern="[[:punct:]]|[[:space:]]", input$gmlName, replacement="_")), # e.g. http://sp7.irea.cnr.it/featureOfInterest/PiattaformaAcquaAlta
-    SF_SpatialSamplingFeature_sfSampledFeature = input$sfSampledFeature, # e.g. http://www.marineregions.org/rest/getGazetteerRecordByMRGID.json/3314/
+    SF_SpatialSamplingFeature_gmlName = paste0('Profile of ', input$gmlName), # e.g. PTF - Piattaforma Acqua Alta
+    SF_SpatialSamplingFeature_gmlDescription = paste0('Profile collected in the station ', input$gmlName, ' within the eLTER site ', ReLTER::getSiteGeneral(input$sfSampledFeature)$title),
+    SF_SpatialSamplingFeature_gmlId = paste0('SSF_profile_', gsub(pattern="[[:punct:]]|[[:space:]]", input$gmlName, replacement="_")), # e.g. PTF
+    SF_SpatialSamplingFeature_identifier = paste0('http://www.get-it.it/sensors/getit.lteritalia.it/sensors/foi/SSF/SP/4326/', input$lat, '/', input$long), # e.g. http://www.get-it.it/sensors/getit.lteritalia.it/sensors/foi/SSF/SP/4326/45.3138/12.5088
+    SF_SpatialSamplingFeature_sfSampledFeature = input$sfSampledFeature, # e.g. https://deims.org/f30007c4-8a6e-4f11-ab87-569db54638fe
     SF_SpatialSamplingFeature_gmlPoint_gmlId = paste0('point_', gsub(pattern="[[:punct:]]|[[:space:]]", input$gmlName, replacement="_")), # e.g. ptf
     SF_SpatialSamplingFeature_gmlPoint_gmlPos = paste0(
       input$lat,
@@ -267,33 +268,50 @@ output$selectParamCSVProfile <- renderUI({
   
   omObservationId <- xml2::xml_find_first(xmlInsertObsProfile, ".//om:OM_Observation")
   xml2::xml_attr(omObservationId, "gml:id") <- paramsXmlInsertResultProfile$OM_ObservationID
+  
   offering <- xml2::xml_find_first(xmlInsertObsProfile, './/sos:offering/text()')
   xml2::xml_text(offering) <- paramsXmlInsertResultProfile$OFFERING
+  
   beginTime <- xml2::xml_find_first(xmlInsertObsProfile, './/gml:beginPosition/text()')
   xml2::xml_text(beginTime) <- paramsXmlInsertResultProfile$BEGIN_TIME
+  
   endTime <- xml2::xml_find_first(xmlInsertObsProfile, './/gml:endPosition/text()')
   xml2::xml_text(endTime) <- paramsXmlInsertResultProfile$END_TIME
+  
   labDateTime <- xml2::xml_find_first(xmlInsertObsProfile, './/gml:timePosition/text()')
   xml2::xml_text(labDateTime) <- paramsXmlInsertResultProfile$LAB_DATETIME
+  
   procedure <- xml2::xml_find_first(xmlInsertObsProfile, ".//om:procedure")
   xml2::xml_attr(procedure, "xlink:href") <- paramsXmlInsertResultProfile$PROCEDURE
+  
   # obsProperty <- xml2::xml_find_first(xmlInsertObsProfile, ".//om:observedProperty")
   # xml2::xml_attr(obsProperty, "xlink:href") <- paramsXmlInsertResultProfile$OBS_PROPERTY
+  
   numValue <- xml2::xml_find_first(xmlInsertObsProfile, './/swe:Count/swe:value/text()')
   xml2::xml_text(numValue) <- paramsXmlInsertResultProfile$NUM_VALUE
+  
   sweValue <- xml2::xml_find_first(xmlInsertObsProfile, './/om:result/swe:DataArray/swe:values/text()')
   xml2::xml_text(sweValue) <- paramsXmlInsertResultProfile$sweValues
+  
   # from map
   gmlPos <- xml2::xml_find_first(xmlInsertObsProfile, './/gml:pos/text()')
   xml2::xml_text(gmlPos) <- paramsXmlInsertResultProfile$SF_SpatialSamplingFeature_gmlPoint_gmlPos
+  
   gmlName <- xml2::xml_find_first(xmlInsertObsProfile, './/gml:name/text()')
   xml2::xml_text(gmlName) <- paramsXmlInsertResultProfile$SF_SpatialSamplingFeature_gmlName
+  
+  gmlDescription <- xml2::xml_find_first(xmlInsertObsProfile, './/gml:description/text()')
+  xml2::xml_text(gmlDescription) <- paramsXmlInsertResultProfile$SF_SpatialSamplingFeature_gmlDescription
+  
   gmlId <- xml2::xml_find_first(xmlInsertObsProfile, './/om:featureOfInterest/sams:SF_SpatialSamplingFeature')
   xml2::xml_attr(gmlId, "gml:id") <- paramsXmlInsertResultProfile$SF_SpatialSamplingFeature_gmlId
+  
   identifier <- xml2::xml_find_first(xmlInsertObsProfile, './/gml:identifier')
   xml2::xml_text(identifier) <- paramsXmlInsertResultProfile$SF_SpatialSamplingFeature_identifier
+  
   sfSampledFeature <- xml2::xml_find_first(xmlInsertObsProfile, './/sf:sampledFeature')
   xml2::xml_attr(sfSampledFeature, 'xlink:href') <- paramsXmlInsertResultProfile$SF_SpatialSamplingFeature_sfSampledFeature
+  
   gmlIdPoint <- xml2::xml_find_first(xmlInsertObsProfile, './/om:featureOfInterest/sams:SF_SpatialSamplingFeature/sams:shape/gml:Point')
   xml2::xml_attr(gmlIdPoint, "gml:id") <- paramsXmlInsertResultProfile$SF_SpatialSamplingFeature_gmlPoint_gmlId
   

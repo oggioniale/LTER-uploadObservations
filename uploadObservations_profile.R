@@ -195,7 +195,7 @@ server <- function(input, output, session) {
   })
   
   # xslObs.url <- "https://www.get-it.it/objects/sensors/xslt/sensor2outputs_4Shiny.xsl"
-  xslObs.url <- "./sensor2outputs_4Shiny.xsl"
+  xslObs.url <- "./xslt/sensor2outputs_4Shiny.xsl"
   style <- read_xml(xslObs.url, package = "xslt")
   outputsParams <- reactive({
     listOutputs <- read.csv(text = xml_xslt((

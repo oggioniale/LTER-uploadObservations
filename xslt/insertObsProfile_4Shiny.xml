@@ -40,6 +40,7 @@
             <om:observedProperty xlink:href="OBS_PPROPERTY" />
             <om:featureOfInterest>
                 <sams:SF_SpatialSamplingFeature gml:id="SSF"> <!-- change with a short name of point, station, etc. -->
+                    <gml:description>DESCRIPTION</gml:description>
                     <gml:identifier codeSpace="">IDENTIFIER_URL</gml:identifier> <!-- change with a URL/URI of point, station, etc. -->
                     <gml:name>NAME</gml:name> <!-- change with a long name of point, station, etc. -->
                     <sf:type xlink:href="http://www.opengis.net/def/samplingFeatureType/OGC-OM/2.0/SF_SamplingPoint"/>
