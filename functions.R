@@ -80,3 +80,23 @@ getOutputsList <- function(sosHost, procedure) {
 }
 # getOutputsList(sosHost = 'http://demo0.get-it.it', procedure = 'http://sp7.irea.cnr.it/sensors/getit.lteritalia.it/procedure/CampbellScientificInc/noModelDeclared/noSerialNumberDeclared/20170914050327762_790362')
 
+getFeatureOfInterestList <- function(sosHost, procedure) {
+  # xslObs.url <- "https://www.get-it.it/objects/sensors/xslt/getFOI_4Shiny.xsl"
+  xslObs.url <- "xslt/getFOI_4Shiny.xsl"
+  style <- xml2::read_xml(xslObs.url, package = "xslt")
+  listFOI <- read.csv(text = xslt::xml_xslt((
+    xml2::read_xml(
+      paste0(
+        sosHost, # https://sensorweb.demo.52north.org/52n-sos-webapp/service
+        '/observations/sos/kvp?service=SOS&version=2.0.0&request=GetFeatureOfInterest&procedure=',
+        procedure # http://www.52north.org/test/procedure/9
+      ),
+      package = "xslt"
+    )
+  ), style), header = TRUE, sep = ';')
+  
+  return(listFOI %>% unique() %>% dplyr::arrange(name))
+}
+
+getFeatureOfInterestList(sosHost = 'http://getit.lteritalia.it', procedure = 'http://www.get-it.it/sensors/getit.lteritalia.it/procedure/noOwnerDeclared/noModelDeclared/noSerialNumberDeclared/1286194C-A5DF-11DF-8ED7-1602DFD72095')
+
