@@ -23,6 +23,9 @@ is_valid_email <- function(x) {
 ### end validation capabilities 
 
 coordinatesFOI <- reactiveValues(lat = NULL, lon = NULL)
+
+map <- leaflet::leaflet()
+
 output$mymap <- renderLeaflet({
   #Get setView parameters
   new_zoom <- 2
@@ -32,7 +35,7 @@ output$mymap <- renderLeaflet({
   new_lon <- 0
   if(!is.null(input$map_center$lng)) new_lon <- input$map_center$lng
   
-  leaflet() %>% addTiles() %>%
+  map %>% addTiles() %>%
     setView(new_lon, new_lat, zoom = new_zoom) %>%
     # setView(lng = 0, lat = 0, zoom = 1) %>%
     addSearchOSM() %>%
@@ -50,23 +53,86 @@ output$mymap <- renderLeaflet({
     )
 })
 
-observeEvent(c(input$mymap_draw_edited_features, input$mymap_draw_new_feature), {
-  if (!is.null(input$mymap_draw_edited_features)) {
+observeEvent(c(input$mymap_draw_edited_features, input$mymap_draw_new_feature, input$oldStationProfile_rows_selected), {
+  if (!is.null(input$oldStationProfile_rows_selected)) {
+    updateTextInput(session, 'lat', value = listOfFOIsPorfile()[input$oldStationProfile_rows_selected,]$lat)
+    updateTextInput(session, 'long', value = listOfFOIsPorfile()[input$oldStationProfile_rows_selected,]$long)
+    updateTextInput(session, 'gmlName', value = listOfFOIsPorfile()[input$oldStationProfile_rows_selected,]$name)
+    updateTextInput(session, 'sfSampledFeature', value = listOfFOIsPorfile()[input$oldStationProfile_rows_selected,]$sampledFeature)
+    
+    mapProxy <- leaflet::leafletProxy("map")
+    mapProxy %>% clearMarkers()
+  } else if (!is.null(input$mymap_draw_edited_features)) {
+    rvRowoldStationProfileSelected <- reactive({
+      listOfFOIsPorfile()[0,]
+    })
+    
+    updateTextInput(session, 'gmlName', value = '')
+    updateTextInput(session, 'sfSampledFeature', value = '')
     click_lon <- input$mymap_draw_edited_features$features[[1]]$geometry$coordinates[[1]]
     click_lat <- input$mymap_draw_edited_features$features[[1]]$geometry$coordinates[[2]]
     coordinatesFOI$lat <- c(click_lat)
     coordinatesFOI$lon <- c(click_lon)
     updateTextInput(session, "lat", value = click_lat)
     updateTextInput(session, "long", value = click_lon)
-  }
-  else
+  } else {
+    rvRowoldStationProfileSelected <- reactive({
+      listOfFOIsPorfile()[0,]
+    })
+    
+    updateTextInput(session, 'gmlName', value = '')
+    updateTextInput(session, 'sfSampledFeature', value = '')
     click_lat <- input$mymap_draw_new_feature$geometry$coordinates[[2]]
     click_lon <- input$mymap_draw_new_feature$geometry$coordinates[[1]]
     coordinatesFOI$lat <- c(click_lat)
     coordinatesFOI$lon <- c(click_lon)
     updateTextInput(session, "lat", value = click_lat)
     updateTextInput(session, "long", value = click_lon)
+  }
 })
+
+# list of FOI ####
+listOfFOIsPorfile <- reactive({
+  listFOIs <- getFeatureOfInterestList(sosHost = input$sosHostProfile, procedure = input$SensorMLURIProfile)
+  return(
+    listFOIs %>% 
+    dplyr::mutate(
+      sampledFeatureUri = paste0("<a href='", sampledFeature, "' target='_blank'>Site info</a>"),
+    ) %>% 
+      dplyr::select(name, lat, long, sampledFeatureUri, sampledFeature)
+  )
+}) 
+
+output$oldStationProfile <- DT::renderDataTable({
+  listFOI <- DT::datatable(
+    listOfFOIsPorfile(),
+    selection = 'single',
+    rownames = FALSE,
+    # colnames = c('Lat', 'Long', 'Name', 'Sampled Feature'),
+    options = list(
+      pageLength = 4,
+      columnDefs = list(list(
+        visible = FALSE,
+        targets = c(1,2,4)
+      )),
+      ordering = FALSE
+    ), 
+    escape = FALSE,
+    # colnames = FALSE,
+    editable = FALSE
+  )
+  
+  return(listFOI)
+})
+
+rvRowoldStationProfileSelected <- reactive({
+  listOfFOIsPorfile()[input$oldStationProfile_rows_selected,]
+})
+
+# output$x4 = renderPrint({
+#   rvRowoldStationProfileSelected()
+# })
+# end
 
 ### Codelist for dropdown menu of stations from procedure and sml:Outputs elements within capabilities XML and DescribeSensor request
 outputsParamsProfile <- reactive({
