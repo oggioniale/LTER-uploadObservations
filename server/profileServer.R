@@ -281,17 +281,17 @@ output$selectParamCSVProfile <- renderUI({
   )
   
   nValues <- nrow(observationsTotal)
+  nCols <- length(observationsTotal)
   paramsXmlInsertResultProfile <- list(
     # from observationsTotal
     OM_ObservationID = 'o_1',
-    BEGIN_TIME = observationsTotal %>% dplyr::arrange(date_time) %>% dplyr::slice(1) %>% dplyr::ungroup() %>% .[,1] %>% as.character(), # e.g. 2008-01-31T09:25:00
+    BEGIN_TIME = observationsTotal %>% dplyr::arrange(1) %>% dplyr::slice(1) %>% dplyr::ungroup() %>% .[,1] %>% as.character(), # e.g. 2008-01-31T09:25:00
     NUM_VALUE = nrow(observationsTotal) %>% as.character(), # e.g. 123
-    END_TIME = observationsTotal %>% dplyr::arrange(date_time) %>% dplyr::slice(nValues) %>% dplyr::ungroup() %>% .[,1] %>% as.character(), # e.g. 2008-01-31T09:28:55
-    LAB_DATETIME = observationsTotal %>% dplyr::arrange(date_time) %>% .[nValues, 1] %>% as.character(), # e.g. 2008-01-31T09:28:55
+    END_TIME = observationsTotal %>% dplyr::arrange(1) %>% dplyr::slice(nValues) %>% dplyr::ungroup() %>% .[,1] %>% as.character(), # e.g. 2008-01-31T09:28:55
+    LAB_DATETIME = observationsTotal %>% dplyr::arrange(1) %>% .[nValues, 1] %>% as.character(), # e.g. 2008-01-31T09:28:55
     sweValues = observationsTotal %>% 
-      dplyr::mutate(new = paste(date_time, depth, temperature, sep = "#")) %>% 
-      dplyr::select(new) %>% 
-      dplyr::summarise(obs = paste(new, collapse = '@')) %>% 
+      tidyr::unite(nCols, sep = "#") %>% 
+      dplyr::summarise(obs = paste(nCols, collapse = '@')) %>% 
       as.character(), # e.g. 2008-01-31T09:25:00#1#13.04@2008-01-31T09:25:05#2#13.053@...
     # from input$SensorMLURIProfile
     PROCEDURE = input$SensorMLURIProfile, # e.g. http://sp7.irea.cnr.it/sensors/vesk.ve.ismar.cnr.it/procedure/Seabird/SBE37/noSerialNumberDeclared/20140223115413720_11525
@@ -302,17 +302,17 @@ output$selectParamCSVProfile <- renderUI({
     ), # e.g. offering:<PROCEDURE>/observations
     # from sensor
     # OBS_PROPERTY = , # e.g. http://vocabs.lter-europe.net/EnvThes/20166
-    omResult_sweField_name = req(outputsParamsProfile()) %>% 
-      .[["name"]] %>% 
-      gsub(' ', '_', .) %>% 
+    omResult_sweField_name = req(outputsParamsProfile()) %>%
+      .[["name"]] %>%
+      gsub(' ', '_', .) %>%
       as.list(), # e.g. Maximum_depth_below_surface_of_the_water_body
-    omResult_sweField_definition = req(outputsParamsProfile()) %>% 
-      .[["definition"]] %>% 
-      gsub(' ', '_', .) %>% 
+    omResult_sweField_definition = req(outputsParamsProfile()) %>%
+      .[["definition"]] %>%
+      gsub(' ', '_', .) %>%
       as.list(), # e.g. http://vocab.nerc.ac.uk/collection/P01/current/MAXWDIST/
-    omResult_sweField_sweUom_code = req(outputsParamsProfile()) %>% 
-      .[["uom"]] %>% 
-      gsub(' ', '_', .) %>% 
+    omResult_sweField_sweUom_code = req(outputsParamsProfile()) %>%
+      .[["uom"]] %>%
+      gsub(' ', '_', .) %>%
       as.list(), # e.g. m
     # from map
     SF_SpatialSamplingFeature_gmlName = paste0('Profile of ', input$gmlName), # e.g. PTF - Piattaforma Acqua Alta
