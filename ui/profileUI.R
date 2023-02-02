@@ -1,7 +1,7 @@
 tabItem(
   tabName = "profile",
   fluidRow(
-    boxPlus(
+    box(
       width = 4,
       title = "Inputs profile observations", 
       closable = FALSE, 
@@ -111,7 +111,7 @@ tabItem(
       )
     ),
     # Main panel for displaying outputs ----
-    boxPlus(
+    box(
       width = 8,
       title = "Parameters matching", 
       closable = FALSE, 
@@ -136,7 +136,7 @@ tabItem(
       )
     ),
     fluidRow(
-      boxPlus(
+      box(
         width = 12,
         title = "Observations table",
         closable = FALSE, 

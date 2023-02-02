@@ -31,10 +31,10 @@ shinyUI(
   fluidPage(
     introjsUI(),
     useShinyalert(),
-    dashboardPagePlus(
+    shinydashboard::dashboardPage(
       skin = "blue",
-      collapse_sidebar = TRUE,
-      dashboardHeaderPlus(
+      # collapse_sidebar = TRUE,
+      header = dashboardHeader(
         title = tagList(
           tags$span(class = "logo-lg", "eLTER - Upload obs"), 
           tags$img(src = "http://www.get-it.it/assets/img/loghi/lter_leaf.jpg")), 
@@ -61,7 +61,7 @@ shinyUI(
         #         actionButton("help", "Give me an overview", style="margin-right: 10px; margin-top: 8px; color: #fff; background-color: #0069D9; border-color: #0069D9")
         # )
       ),
-      dashboardSidebar(
+      sidebar = dashboardSidebar(
         collapsed = TRUE,
         sidebarMenu(
           menuItem("Fixed Station", tabName = "fixed", icon = icon("map-marked-alt", lib = "font-awesome"))
@@ -73,7 +73,7 @@ shinyUI(
           # menuItem("On Sample", tabName = "sample", icon = icon("eyedropper", lib = "font-awesome"))
         )
       ),
-      dashboardBody(
+      body = dashboardBody(
         tags$head(
           tags$link(rel = "stylesheet", type = "text/css", href = "css/style.css")
         ),

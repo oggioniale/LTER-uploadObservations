@@ -4,22 +4,26 @@ iv$add_rule("lat", sv_required())
 iv$add_rule("long", sv_required())
 iv$add_rule("gmlName", sv_required())
 iv$add_rule("sfSampledFeature", sv_required())
-iv$add_rule(
-  "sfSampledFeature",
-  ~ if (!is_valid_uri(.)) "Please provide a valid URL (e.g. http:://www.get-it.it)"
-)
-# iv$add_rule("sfSampledFeature", ~ if (!is_valid_email(.)) "Please provide a valid email")
+# iv$add_rule(
+#   "sfSampledFeature",
+#   ~ if (!is_valid_uri(.)) "Please provide a valid URL (e.g. http:://www.get-it.it)"
+# )
+iv$add_rule("sosHostProfile", sv_required())
+iv$add_rule("SensorMLURIProfile", sv_required())
+iv$add_rule("foiStationProfile", sv_required())
+iv$add_rule("file1Profile", sv_required())
+iv$add_rule("finalCheckProfile", sv_required())
 iv$enable()
 
-is_valid_uri <- function(x) {
-  grepl("^(?:(?:http(?:s)?|ftp)://)(?:\\S+(?::(?:\\S)*)?@)?(?:(?:[a-z0-9\u00a1-\uffff](?:-)*)*(?:[a-z0-9\u00a1-\uffff])+)(?:\\.(?:[a-z0-9\u00a1-\uffff](?:-)*)*(?:[a-z0-9\u00a1-\uffff])+)*(?:\\.(?:[a-z0-9\u00a1-\uffff]){2,})(?::(?:\\d){2,5})?(?:/(?:\\S)*)?$",
-        as.character(x),
-        ignore.case=TRUE
-        )
-}
-is_valid_email <- function(x) {
-  grepl("^\\s*[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\s*$", as.character(x), ignore.case=TRUE)
-}
+# is_valid_uri <- function(x) {
+#   grepl("^(?:(?:http(?:s)?|ftp)://)(?:\\S+(?::(?:\\S)*)?@)?(?:(?:[a-z0-9\u00a1-\uffff](?:-)*)*(?:[a-z0-9\u00a1-\uffff])+)(?:\\.(?:[a-z0-9\u00a1-\uffff](?:-)*)*(?:[a-z0-9\u00a1-\uffff])+)*(?:\\.(?:[a-z0-9\u00a1-\uffff]){2,})(?::(?:\\d){2,5})?(?:/(?:\\S)*)?$",
+#         as.character(x),
+#         ignore.case=TRUE
+#         )
+# }
+# is_valid_email <- function(x) {
+#   grepl("^\\s*[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\s*$", as.character(x), ignore.case=TRUE)
+# }
 ### end validation capabilities 
 
 coordinatesFOI <- reactiveValues(lat = NULL, lon = NULL)
@@ -316,7 +320,7 @@ output$selectParamCSVProfile <- renderUI({
       as.list(), # e.g. m
     # from map
     SF_SpatialSamplingFeature_gmlName = paste0('Profile of ', input$gmlName), # e.g. PTF - Piattaforma Acqua Alta
-    SF_SpatialSamplingFeature_gmlDescription = paste0('Profile collected in the station ', input$gmlName, ' within the eLTER site ', ReLTER::getSiteGeneral(input$sfSampledFeature)$title),
+    SF_SpatialSamplingFeature_gmlDescription = paste0('Profile collected in the station ', input$gmlName, ' within the eLTER site ', ReLTER::get_site_info(input$sfSampledFeature)$title),
     SF_SpatialSamplingFeature_gmlId = paste0('SSF_profile_', gsub(pattern="[[:punct:]]|[[:space:]]", input$gmlName, replacement="_")), # e.g. PTF
     SF_SpatialSamplingFeature_identifier = paste0('http://www.get-it.it/sensors/getit.lteritalia.it/sensors/foi/SSF/SP/4326/', input$lat, '/', input$long), # e.g. http://www.get-it.it/sensors/getit.lteritalia.it/sensors/foi/SSF/SP/4326/45.3138/12.5088
     SF_SpatialSamplingFeature_sfSampledFeature = input$sfSampledFeature, # e.g. https://deims.org/f30007c4-8a6e-4f11-ab87-569db54638fe

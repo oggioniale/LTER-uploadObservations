@@ -1,7 +1,7 @@
 tabItem(
   tabName = "fixed",
   fluidRow(
-    boxPlus(
+    box(
       width = 4,
       title = "Inputs fixed station observations", 
       closable = FALSE, 
@@ -32,7 +32,7 @@ tabItem(
              # Input: procedure URL
              introBox(
                div(HTML("<hr><h4><b>Station</b></h4>")),
-               # TODO: add the link to the SOS endpoint selected above. A shinyBS::bsModal appairs in order to visualize the sensors page.
+               # TODO: add the link to the SOS endpoint selected above. A shinyBS::bsModal appears in order to visualize the sensors page.
                selectInput(inputId = "SensorMLURIFixed",
                            label = HTML("Select name of the station/sensor (e.g. <a href=\"http://getit.lteritalia.it/sensors/sensor/ds/?format=text/html&sensor_id=http%3A//www.get-it.it/sensors/getit.lteritalia.it/procedure/CampbellScientificInc/noModelDeclared/noSerialNumberDeclared/20170914050327762_790362\" target=\"_blank\">ENEA Santa Teresa meteorological station</a>)"), 
                            multiple = FALSE,
@@ -100,7 +100,7 @@ tabItem(
       )
     ),
     introBox(
-      boxPlus(
+      box(
         width = 8,
         title = "Parameters matching", 
         closable = FALSE, 
@@ -129,7 +129,7 @@ tabItem(
     )
   ),
   fluidRow(
-    boxPlus(
+    box(
       width = 12,
       title = "Observations table",
       closable = FALSE, 
