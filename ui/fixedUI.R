@@ -1,6 +1,7 @@
 tabItem(
   tabName = "fixed",
   fluidRow(
+      verbatimTextOutput('log'),
     box(
       width = 4,
       title = "Inputs fixed station observations", 
@@ -41,7 +42,13 @@ tabItem(
                data.step = 2,
                data.intro = "This is the dopdown menu where you must select the name of the station/sensor."
              ),
-             
+             ## ================== {datamods} functionality ======================================
+             ## alternative file upload and pre-processing with {datamods}
+             introBox(
+                 h4(tags$b('alternative file upload with {datamods}')),
+                 div(actionButton('dataUploadWithDatamods', 'upload data'))
+             ),
+             ## ===================================================================================
              # Input: Select a file ----
              introBox(
                div(HTML("<hr><h4><b>File</b></h4>")),

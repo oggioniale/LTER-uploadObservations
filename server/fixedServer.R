@@ -13,6 +13,7 @@ observe({
   )
 })
 
+
 # start introjs when button is pressed with custom options and events
 observe({
   req(input$shinyalert)
@@ -381,5 +382,40 @@ observeEvent(input$sendFile, {
     #         )
     #     cat(paste0(response, collapse = ''))
     # }
+
+
+
   }
 })
+
+
+
+## =========================================================================
+## example data upload with {datamods}
+observe({
+    import_modal(
+        id = "modalImport",
+        title = "Import data to be used in application",
+        from = c("env", "file", "copypaste", "googlesheets", "url")
+    )
+}) |> 
+    bindEvent(input$dataUploadWithDatamods, 
+              ignoreNULL = TRUE, ignoreInit = TRUE
+              )
+
+
+## access the uploaded data as uploadedData$data()
+## access / set the name of uploaded data (the name shown for the
+## dataset in the UI) as uploadedData$name()
+uploadedData <- import_server("modalImport", return_class = "tbl_df")
+
+## listen for upload via modal and do some stuff:
+observe({
+    req(uploadedData$data())
+    df = uploadedData$data()
+    shinyalert(
+        title = paste("you uploaded", nrow(df), "rows of data"),
+        type = "info"
+    )
+}) |>
+    bindEvent(uploadedData$data())
